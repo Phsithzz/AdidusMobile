@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.adidusshop.screens.HomeProduct
 import com.example.adidusshop.screens.LoginScreen
+import com.example.adidusshop.screens.SignUpScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,16 +19,32 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             NavHost(
-                navController = navController, startDestination = "login"
+                navController = navController, startDestination = "signin"
             ){
-                 composable("login"){
-                     LoginScreen {
-
-                     }
+                 composable("signin"){
+                     LoginScreen(
+                         onLoginSuccess = {
+                             navController.navigate("home"){
+                                 popUpTo("signin"){inclusive=true}
+                             }
+                         },
+                         onGoToRegister = {
+                             navController.navigate("signup")
+                         }
+                     )
                  }
-//                composable("home"){
-//
-//                }
+                composable("signup"){
+                    SignUpScreen(
+                        onSignupSuccess = {
+                            navController.navigate("signin"){
+                                popUpTo("signup"){inclusive=true}
+                            }
+                        }
+                    )
+                }
+                composable("home"){
+                    HomeProduct()
+                }
 
 
 

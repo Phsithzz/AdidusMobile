@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -30,6 +29,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,32 +41,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.adidusshop.R
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.adidusshop.R
 import com.example.adidusshop.viewModels.AuthViewModel
-import com.example.adidusshop.viewModels.LoginState
-
+import com.example.adidusshop.viewModels.RegisterState
 
 @Composable
-fun LoginScreen(
-    onLoginSuccess: () -> Unit,
-    onGoToRegister: () -> Unit
-) {
-    var email by remember { mutableStateOf("") }
+fun SignUpScreen(
+    onSignupSuccess: () -> Unit
+){
+    var name by remember{ mutableStateOf("") }
+    var lastname by remember {mutableStateOf("")}
+    var email by remember {mutableStateOf("")}
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+
     var message by remember { mutableStateOf("") }
 
     val authViewModel: AuthViewModel = viewModel()
-    val loginState by authViewModel.loginState.collectAsState()
+    val registerState by authViewModel.registerState.collectAsState()
 
-    LaunchedEffect(loginState) {
-        if (loginState is LoginState.Success) {
-            onLoginSuccess()
+    LaunchedEffect(registerState) {
+        if (registerState is RegisterState.Success){
+            onSignupSuccess()
         }
     }
-
 
     Column(
         modifier = Modifier
@@ -79,14 +79,14 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(30.dp))
 
         Image(
-            modifier = Modifier.size(250.dp),
+            modifier = Modifier.size(100.dp),
             painter = painterResource(id = R.drawable.iconmobile),
             contentDescription = "IconAdidus"
 
         )
 
         Text(
-            text = "Welcome Back",
+            text = "Welcome To My Shop",
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black
@@ -94,12 +94,6 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text(
-            text = "Sign In to Shop",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -119,25 +113,23 @@ fun LoginScreen(
                 modifier = Modifier.padding(24.dp)
             ) {
                 Text(
-                    text = "Email",
+                    text = "Name",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
-
                 Spacer(modifier = Modifier.height(10.dp))
-
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    value = email,
-                    onValueChange = {email = it},
+                    value = name,
+                    onValueChange = {name = it},
                     placeholder = {Text(
-                        text = "Enter your Email"
+                        text = "Enter your Name"
                     )},
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.Email,
+                            imageVector = Icons.Default.Person,
                             contentDescription = "Icon person",
                             tint = Color.Gray
                         )
@@ -149,6 +141,67 @@ fun LoginScreen(
                     )
                 )
                 Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    text = "LastName",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = lastname,
+                    onValueChange = {lastname = it},
+                    placeholder = {Text(
+                        text = "Enter your Lastname"
+                    )},
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Icon person",
+                            tint = Color.Gray
+                        )
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Green,
+                        unfocusedBorderColor = Color.Gray
+                    )
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    text = "Email",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = email,
+                    onValueChange = {email = it},
+                    placeholder = {Text(
+                        text = "Enter your Email"
+                    )},
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = "Icon Email",
+                            tint = Color.Gray
+                        )
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Green,
+                        unfocusedBorderColor = Color.Gray
+                    )
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+
                 Text(
                     text = "Password",
                     fontSize = 18.sp,
@@ -167,7 +220,7 @@ fun LoginScreen(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Lock,
-                            contentDescription = "Icon person",
+                            contentDescription = "Icon Lock",
                             tint = Color.Gray
                         )
                     },
@@ -179,8 +232,40 @@ fun LoginScreen(
                     visualTransformation = PasswordVisualTransformation()
 
                 )
-
                 Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Confirm Password",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = confirmPassword,
+                    onValueChange = {confirmPassword = it},
+                    placeholder = {Text(
+                        text = "Enter your Password Again"
+                    )},
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Lock,
+                            contentDescription = "Icon Lock",
+                            tint = Color.Gray
+                        )
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Green,
+                        unfocusedBorderColor = Color.Gray
+                    ),
+                    visualTransformation = PasswordVisualTransformation()
+
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
 
                 Row(
                     modifier = Modifier
@@ -194,25 +279,21 @@ fun LoginScreen(
                         color = Color.Red,
                     )
                     TextButton(
-                        onClick={
-                            onGoToRegister()
-                        }
-                    ){
+                        onClick = {onSignupSuccess() }
+                    ) {
                         Text(
-                            text = "Sign Up Here",
+                            text = "Sign In Here",
                             fontSize = 16.sp,
                             color = Color.Black,
                         )
+                    }
 
                 }
-
-                }
-
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
                     onClick = {
-                        authViewModel.login(email, password)
+                        authViewModel.register(name,lastname,email, password,confirmPassword)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -222,7 +303,7 @@ fun LoginScreen(
                         containerColor = Color.Black
                     )
                 ) {
-                    if (loginState is LoginState.Loading) {
+                    if (registerState is RegisterState.Loading) {
                         CircularProgressIndicator(
                             color = Color.White,
                             strokeWidth = 2.dp,
@@ -230,7 +311,7 @@ fun LoginScreen(
                         )
                     } else {
                         Text(
-                            text = "Sign In",
+                            text = "Sign Up",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -240,25 +321,24 @@ fun LoginScreen(
             }
         }
 
-        when (loginState) {
-            is LoginState.Idle -> {
+        when (registerState) {
+            is RegisterState.Idle -> {
 
             }
 
-            is LoginState.Loading -> {
+            is RegisterState.Loading -> {
 
             }
 
+            is RegisterState.Error -> {
+                message = (registerState as RegisterState.Error).message
+            }
+            is RegisterState.Success -> {
 
-            is LoginState.Error -> {
-                message = (loginState as LoginState.Error).message
             }
 
-            is LoginState.Success -> {
-
-            }
+            else -> {}
         }
 
     }
-
 }
