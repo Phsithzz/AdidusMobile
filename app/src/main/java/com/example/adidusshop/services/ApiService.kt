@@ -1,5 +1,6 @@
 package com.example.adidusshop.services
 
+import com.example.adidusshop.models.Product
 import com.example.adidusshop.models.User
 import com.example.adidusshop.models.requestModel.LoginRequest
 import com.example.adidusshop.models.requestModel.RegisterRequest
@@ -10,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 interface ApiService {
@@ -27,7 +29,13 @@ interface ApiService {
         @Body request: LoginRequest
     ): LoginResponse
 
+    @GET("products")
+    suspend fun getProduct(): List<Product>
 
+    @GET("products/type/{description}")
+    suspend fun getProductType(
+        @Path("description") description:String
+    ):List<Product>
 
 }
 
