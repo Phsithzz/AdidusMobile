@@ -1,7 +1,7 @@
 package com.example.adidusshop.models
 
 data class Product(
-    val id:Int,
+    val product_id:Int,
     val name:String,
     val description:String,
     val price:Int,

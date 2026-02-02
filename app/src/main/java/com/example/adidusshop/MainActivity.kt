@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.adidusshop.screens.HomeProduct
 import com.example.adidusshop.screens.LoginScreen
+import com.example.adidusshop.screens.ProductDetail
 import com.example.adidusshop.screens.SignUpScreen
 
 class MainActivity : ComponentActivity() {
@@ -43,8 +45,17 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 composable("home"){
-                    HomeProduct()
+                    HomeProduct(
+                        navController = navController
+                    )
                 }
+                composable("detail/{product_id}") { backStackEntry ->
+                    val product_id = backStackEntry.arguments
+                        ?.getString("product_id")?.toInt() ?: 0
+
+                    ProductDetail(product_id = product_id)
+                }
+
 
 
 

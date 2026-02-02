@@ -38,4 +38,18 @@ class ProductViewModel: ViewModel(){
             }
         }
     }
+
+    fun getProductId(product_id:Int){
+        productState = ProductState.Loading
+
+        viewModelScope.launch {
+            try {
+                val product = RetrofitInstance.api.getProductId(product_id)
+                productState = ProductState.DetailSuccess(product)
+            }
+            catch (e: Exception){
+                productState = ProductState.Error(e.message ?:"Unknown error")
+            }
+        }
+    }
 }

@@ -37,6 +37,10 @@ interface ApiService {
         @Path("description") description:String
     ):List<Product>
 
+    @GET("products/{product_id}")
+    suspend fun getProductId(
+        @Path("product_id")product_id:Int
+    ):Product
 }
 
 object RetrofitInstance {
