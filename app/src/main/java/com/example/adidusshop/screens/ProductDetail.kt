@@ -282,7 +282,9 @@ Spacer(modifier = Modifier.width(10.dp))
                 },
                 confirmButton = {
                     Button(
-                        onClick = {},
+                        onClick = {
+                            setPopUpSuccess = false
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Green,
                             contentColor = Color.White
