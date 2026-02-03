@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.adidusshop.viewModels.CurrencyUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,7 +114,7 @@ fun HomeProduct(
             contentAlignment = Alignment.Center,
 
         ) {
-            when (val state = viewModel.productState) {
+            when (val state = viewModel.productListState) {
                 is ProductState.Loading -> {
                     CircularProgressIndicator()
                 }
@@ -174,7 +175,7 @@ fun HomeProduct(
                                         verticalAlignment = Alignment.CenterVertically,
                                     ) {
                                         Text(
-                                            text = "฿ ${product.price}",
+                                            text = CurrencyUtil.baht(product.price),
                                             fontSize = 16.sp,
                                             fontWeight = FontWeight.Bold,
                                         )

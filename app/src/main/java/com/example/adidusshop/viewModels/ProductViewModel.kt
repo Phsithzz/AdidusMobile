@@ -10,45 +10,47 @@ import kotlinx.coroutines.launch
 
 class ProductViewModel: ViewModel(){
 
-    var productState by mutableStateOf<ProductState>(ProductState.Idle)
+
+    var productListState by mutableStateOf<ProductState>(ProductState.Idle)
+        private set
+    var productDetailState by mutableStateOf<ProductState>(ProductState.Idle)
         private set
 
-
     fun getAllProduct() {
-        productState = ProductState.Loading
+        productListState = ProductState.Loading
 
         viewModelScope.launch {
             try {
                 val result = RetrofitInstance.api.getProduct()
-                productState = ProductState.Success(result)
+                productListState = ProductState.Success(result)
             } catch (e: Exception) {
-                productState = ProductState.Error(e.message ?: "Unknown error")
+                productListState = ProductState.Error(e.message ?: "Unknown error")
             }
         }
     }
     fun getProductType(description: String) {
-        productState = ProductState.Loading
+        productDetailState = ProductState.Loading
 
         viewModelScope.launch {
             try {
                 val result = RetrofitInstance.api.getProductType(description)
-                productState = ProductState.Success(result)
+                productDetailState = ProductState.Success(result)
             } catch (e: Exception) {
-                productState = ProductState.Error(e.message ?: "Unknown error")
+                productDetailState = ProductState.Error(e.message ?: "Unknown error")
             }
         }
     }
 
     fun getProductId(product_id:Int){
-        productState = ProductState.Loading
+        productDetailState = ProductState.Loading
 
         viewModelScope.launch {
             try {
                 val product = RetrofitInstance.api.getProductId(product_id)
-                productState = ProductState.DetailSuccess(product)
+                productDetailState = ProductState.DetailSuccess(product)
             }
             catch (e: Exception){
-                productState = ProductState.Error(e.message ?:"Unknown error")
+                productDetailState = ProductState.Error(e.message ?:"Unknown error")
             }
         }
     }

@@ -53,7 +53,10 @@ class MainActivity : ComponentActivity() {
                     val product_id = backStackEntry.arguments
                         ?.getString("product_id")?.toInt() ?: 0
 
-                    ProductDetail(product_id = product_id)
+                    ProductDetail(
+                        navController = navController,
+                        product_id = product_id
+                    )
                 }
 
 
