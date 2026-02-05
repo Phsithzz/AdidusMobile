@@ -45,6 +45,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.adidusshop.viewModels.ProductState
 import com.example.adidusshop.viewModels.ProductViewModel
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -93,7 +95,16 @@ fun HomeProduct(
 
                 )
                 TabRow(
-                    selectedTabIndex = selectedTab
+                    selectedTabIndex = selectedTab,
+                    containerColor = Color.Black,
+                    contentColor = Color.White,
+                    indicator = { tabPositions ->
+                        TabRowDefaults.Indicator(
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
+                            color = Color.Red,
+                            height = 2.dp
+                        )
+                    }
                 ) {
                     tab.forEachIndexed { index, t ->
                         Tab(
