@@ -1,6 +1,7 @@
 package com.example.adidusshop.screens
 
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -67,7 +68,9 @@ fun HomeProduct(
     val tab = listOf("All", "Sneaker", "Football", "FlipFlops")
     var selectedTab by remember { mutableStateOf(0) }
 
+
     LaunchedEffect(selectedTab) {
+        Log.d("TAB", "Selected tab = ${tab[selectedTab]}")
         if (selectedTab == 0) {
             viewModel.getAllProduct()
         } else {

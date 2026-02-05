@@ -29,14 +29,14 @@ class ProductViewModel: ViewModel(){
         }
     }
     fun getProductType(description: String) {
-        productDetailState = ProductState.Loading
+        productListState  = ProductState.Loading
 
         viewModelScope.launch {
             try {
                 val result = RetrofitInstance.api.getProductType(description)
-                productDetailState = ProductState.Success(result)
+                productListState  = ProductState.Success(result)
             } catch (e: Exception) {
-                productDetailState = ProductState.Error(e.message ?: "Unknown error")
+                productListState  = ProductState.Error(e.message ?: "Unknown error")
             }
         }
     }

@@ -16,12 +16,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -39,6 +42,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -60,6 +65,9 @@ fun SignUpScreen(
 
     val authViewModel: AuthViewModel = viewModel()
     val registerState by authViewModel.registerState.collectAsState()
+
+    var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(registerState) {
         if (registerState is RegisterState.Success){
@@ -224,12 +232,24 @@ fun SignUpScreen(
                             tint = Color.Gray
                         )
                     },
+                    trailingIcon = {
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector =
+                                    if (passwordVisible) Icons.Default.Visibility
+                                    else Icons.Default.VisibilityOff,
+                                contentDescription = "Toggle password visibility"
+                            )
+                        }
+                    },
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color.Green,
                         unfocusedBorderColor = Color.Gray
                     ),
-                    visualTransformation = PasswordVisualTransformation()
+                    visualTransformation =
+                        if (passwordVisible) VisualTransformation.None
+                        else PasswordVisualTransformation(),
 
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -256,22 +276,35 @@ fun SignUpScreen(
                             tint = Color.Gray
                         )
                     },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            confirmPasswordVisible = !confirmPasswordVisible
+                        }) {
+                            Icon(
+                                imageVector =
+                                    if (confirmPasswordVisible) Icons.Default.Visibility
+                                    else Icons.Default.VisibilityOff,
+                                contentDescription = "Toggle confirm password visibility"
+                            )
+                        }
+                    },
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color.Green,
                         unfocusedBorderColor = Color.Gray
                     ),
-                    visualTransformation = PasswordVisualTransformation()
+                    visualTransformation =
+                        if (confirmPasswordVisible) VisualTransformation.None
+                        else PasswordVisualTransformation(),
 
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
 
-                Row(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+
                 ) {
                     Text(
                         text = message,
@@ -279,17 +312,19 @@ fun SignUpScreen(
                         color = Color.Red,
                     )
                     TextButton(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
                         onClick = {onSignupSuccess() }
                     ) {
                         Text(
                             text = "Sign In Here",
                             fontSize = 16.sp,
                             color = Color.Black,
+
                         )
                     }
 
                 }
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Button(
                     onClick = {
