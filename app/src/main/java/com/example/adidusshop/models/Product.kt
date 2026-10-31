@@ -1,11 +1,14 @@
 package com.example.adidusshop.models
 
 data class Product(
-    val product_id:Int,
-    val name:String,
-    val description:String,
-    val price:Int,
-    val image_filename:String,
-    val brand:String,
-
+    val product_id: Int,
+    val name: String,
+    val description: String,
+    val price: Int,
+    val image_filename: String,
+    val brand: String,
+    val stock_quantity: Int? = 0,
+    val category_name: String? = null,
+    val detail: String? = null,
+    val variants: List<ProductVariant>? = emptyList()
 )
